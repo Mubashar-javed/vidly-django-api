@@ -27,8 +27,11 @@ INSTALLED_APPS = [
     # third party apps
     'corsheaders',
     'rest_framework',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
     # local apps
     'movies.apps.MoviesConfig',
+    "accounts.apps.AccountsConfig"
 ]
 
 MIDDLEWARE = [
@@ -109,4 +112,25 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # cors-header settings
-CORS_ORIGIN_WHITELIST = ["http://localhost:3000", "http://127.0.0.1:3000", ]
+CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ORIGIN_WHITELIST = ["http://localhost:3000", "http://127.0.0.1:3000", ]
+
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'x-auth-token',
+]
+
+# rest_framework setting
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        # "rest_framework.authentication.TokenAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    )
+}
+
+REST_USE_JWT = True  # for dj_rest_auth jwt authentication
+
+REST_AUTH_SERIALIZERS = {
+    "JWT_TOKEN_CLAIMS_SERIALIZER": "accounts.serializer.MyTokenObtainPairSerializer"
+}
