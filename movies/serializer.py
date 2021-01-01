@@ -13,4 +13,8 @@ class MovieSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Movie
-        fields = "__all__"
+        fields = ["_id", "title", "genre", "numberInStock", "dailyRentalRate"]
+
+    def create(self, validated_data):
+        print("validated data is:", validated_data)
+        return super().create(validated_data)

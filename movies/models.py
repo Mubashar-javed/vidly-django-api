@@ -1,10 +1,9 @@
-from django.core.validators import MinLengthValidator, MaxLengthValidator
 from django.db import models
 
 
 class Genre(models.Model):
     _id = models.AutoField(primary_key=True)
-    name = models.CharField("Genre Name", unique=True, max_length=50, validators=[MinLengthValidator(5)])
+    name = models.CharField("Genre Name", unique=True, max_length=50)
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         self.name = self.name.strip()
@@ -16,10 +15,10 @@ class Genre(models.Model):
 
 class Movie(models.Model):
     _id = models.AutoField(primary_key=True)
-    title = models.CharField(unique=True, max_length=250, validators=[MinLengthValidator(5)])
+    title = models.CharField(unique=True, max_length=250)
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
-    numberInStock = models.PositiveSmallIntegerField(validators=[MaxLengthValidator(255)])
-    dailyRentalRate = models.PositiveSmallIntegerField(validators=[MaxLengthValidator(255)])
+    numberInStock = models.PositiveSmallIntegerField(default=0)
+    dailyRentalRate = models.PositiveSmallIntegerField(default=0)
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         # remove title whitespaces before saving in db

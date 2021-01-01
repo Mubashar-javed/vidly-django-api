@@ -1,7 +1,10 @@
-from corsheaders.defaults import default_headers
+import datetime
 from pathlib import Path
 
+from corsheaders.defaults import default_headers
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from django.utils import timezone
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -110,7 +113,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-
+APPEND_SLASH = False
 # cors-header settings
 CORS_ALLOW_ALL_ORIGINS = True
 # CORS_ORIGIN_WHITELIST = ["http://localhost:3000", "http://127.0.0.1:3000", ]
@@ -124,13 +127,15 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
-        # "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     )
 }
 
 REST_USE_JWT = True  # for dj_rest_auth jwt authentication
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=1),
+}
 
 REST_AUTH_SERIALIZERS = {
-    "JWT_TOKEN_CLAIMS_SERIALIZER": "accounts.serializer.MyTokenObtainPairSerializer"
+    "JWT_TOKEN_CLAIMS_SERIALIZER": "accounts.serializer.CustomTokenObtainPairSerializer",
 }
